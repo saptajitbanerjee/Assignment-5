@@ -1,0 +1,30 @@
+# Machine specification (Q1). Fill in every field; give units. Fill in N/A if not applicable.
+# Machine: IITM cluster login node (2-socket server). Values marked (measured) come from
+# microbenchmarks described in report.pdf; the rest from lscpu, /sys and Intel's specification.
+
+CPU model                       : 2 x Intel Xeon Gold 6240R @ 2.40 GHz (2 sockets)
+Microarchitecture               : Cascade Lake-SP (Intel, 14 nm, family 6 model 85 stepping 7)
+Physical cores                  : 48 (24 per socket)
+Logical cores (hardware threads): 48 (Hyper-Threading disabled, 1 thread per core)
+Performance / efficiency cores  : 48 / 0 (N/A: homogeneous cores, no hybrid P/E design)
+Base clock (GHz)                : 2.4
+Max single-core clock (GHz)     : 4.0 (spec max turbo); measured 3.59 scalar, 2.81 with AVX-512 FMAs on both ports
+All-core clock under load (GHz) : 3.18 scalar (measured, 48 cores); 1.43 with AVX-512 FMAs on all 48 cores (measured)
+SIMD instruction set and width  : AVX-512 (F/CD/BW/DQ/VL/VNNI), 512-bit = 16 FP32 lanes; also AVX2/FMA3 (256-bit)
+FMA units per core              : 2 x 512-bit FMA (ports 0+1 fused and port 5); measured 64 FP32 FLOP/cycle/core
+Vector registers per core       : 32 x 512-bit zmm registers (+ 8 opmask registers k0-k7)
+L1 data cache (per core)        : 32 KB, 8-way, private (plus 32 KB L1i)
+L2 cache (size, shared by)      : 1 MB per core, 16-way, private (shared by 1 core)
+L3 cache (size, shared by)      : 35.75 MB per socket (36608 KB), non-inclusive, shared by 24 cores; 71.5 MB total
+Cache line size (bytes)         : 64
+RAM size (GB)                   : 192 (12 x 16 GB DIMMs)
+RAM type, speed (MT/s), channels: DDR4-2933 (max supported by the 6240R), 6 channels per socket, 12 channels total, 1 DIMM per channel
+Operating system                : AlmaLinux 8.9 (Linux 4.18.0-513.5.1.el8_9.x86_64)
+Compiler and version            : clang 23.1.4 (conda-forge build), flags -O3 -march=native (-fopenmp for omp)
+
+# Derived (show the calculation in report.pdf)
+Peak FP32 GFLOP/s, one core     : 256 theoretical (2 FMA x 16 lanes x 2 FLOP x 4.0 GHz); 179.5 measured (AVX-512 clock 2.81 GHz)
+Peak FP32 GFLOP/s, all cores    : 7372.8 theoretical (48 x 64 FLOP/cycle x 2.4 GHz); 4433 measured (AVX-512 all-core clock 1.43 GHz)
+Memory bandwidth (GB/s)         : 281.6 theoretical (12 ch x 2933 MT/s x 8 B); 232.2 measured all cores (read); 13.8 measured one core
+Ridge point, one core (FLOP/B)  : 13.0 measured (179.5 / 13.8)
+Ridge point, all cores (FLOP/B) : 19.1 measured (4433 / 232.2); 26.2 theoretical (7372.8 / 281.6)
