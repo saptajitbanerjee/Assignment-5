@@ -26,5 +26,5 @@ Compiler and version            : clang 23.1.4 (conda-forge build), flags -O3 -m
 Peak FP32 GFLOP/s, one core     : 256 theoretical (2 FMA x 16 lanes x 2 FLOP x 4.0 GHz); 179.5 measured (AVX-512 clock 2.81 GHz)
 Peak FP32 GFLOP/s, all cores    : 7372.8 theoretical (48 x 64 FLOP/cycle x 2.4 GHz); 4433 measured (AVX-512 all-core clock 1.43 GHz)
 Memory bandwidth (GB/s)         : 281.6 theoretical (12 ch x 2933 MT/s x 8 B); 232.2 measured all cores (read); 13.8 measured one core
-Ridge point, one core (FLOP/B)  : 13.0 measured (179.5 / 13.8)
+Ridge point, one core (FLOP/B)  : 0.91 theoretical (256 / 281.6); 13.0 measured (179.5 / 13.8)
 Ridge point, all cores (FLOP/B) : 19.1 measured (4433 / 232.2); 26.2 theoretical (7372.8 / 281.6)
